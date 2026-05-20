@@ -51,6 +51,7 @@ export default function App() {
   const [guess, setGuess] = useState(0.5);
   const [dialStyle] = useState<DialStyle>('curve');
   const [soundOn, setSoundOn] = useState(false);
+  const [promptRevealed, setPromptRevealed] = useState(false);
 
   const prompt = WAVELENGTH_PROMPTS[promptIdx];
 
@@ -63,9 +64,15 @@ export default function App() {
   };
 
   const goPass   = () => { if (soundOn) sfx.thunk();  setPhase('pass'); };
-  const goGuess  = () => { if (soundOn) sfx.whoosh(); setPhase('guesser'); };
+  const goGuess  = () => { if (soundOn) sfx.whoosh(); setPromptRevealed(false); setPhase('guesser'); };
   const goReveal = () => { if (soundOn) sfx.lock();   setPhase('reveal'); };
   const goHome   = () => setPhase('home');
+
+  const skipPrompt = () => {
+    if (soundOn) sfx.draw();
+    setPromptIdx(randomPrompt(promptIdx));
+    setTarget(randomTarget());
+  };
 
   const roleInfo = (() => {
     if (phase === 'reveal') {
@@ -114,9 +121,11 @@ export default function App() {
             {/* header */}
             <div style={{ padding: '0 18px' }}>
               <RoleBadge text={roleInfo.text} sub={roleInfo.sub} color={roleInfo.color} />
-              <div style={{ marginTop: 14 }}>
-                <PromptCard prompt={prompt} />
-              </div>
+              {(phase !== 'guesser' || promptRevealed) && (
+                <div style={{ marginTop: 14 }}>
+                  <PromptCard prompt={prompt} />
+                </div>
+              )}
             </div>
 
             {/* dial + footer */}
@@ -130,11 +139,12 @@ export default function App() {
                 <GuesserScreen
                   prompt={prompt} value={guess} onChange={setGuess}
                   dialStyle={dialStyle} onLock={goReveal}
+                  promptRevealed={promptRevealed} onRevealPrompt={() => setPromptRevealed(true)}
                 />
               ) : (
                 <StorytellerScreen
                   prompt={prompt} target={target}
-                  dialStyle={dialStyle} onPass={goPass}
+                  dialStyle={dialStyle} onPass={goPass} onSkip={skipPrompt}
                 />
               )}
             </div>
