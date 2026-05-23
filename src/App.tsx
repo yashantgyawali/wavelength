@@ -60,11 +60,12 @@ export default function App() {
     setPromptIdx(randomPrompt(promptIdx));
     setTarget(randomTarget());
     setGuess(0.5);
+    setPromptRevealed(false);
     setPhase('storyteller');
   };
 
   const goPass   = () => { if (soundOn) sfx.thunk();  setPhase('pass'); };
-  const goGuess  = () => { if (soundOn) sfx.whoosh(); setPromptRevealed(false); setPhase('guesser'); };
+  const goGuess  = () => { if (soundOn) sfx.whoosh(); setPhase('guesser'); };
   const goReveal = () => { if (soundOn) sfx.lock();   setPhase('reveal'); };
   const goHome   = () => setPhase('home');
 
@@ -122,7 +123,7 @@ export default function App() {
             <div style={{ padding: '0 18px' }}>
               <RoleBadge text={roleInfo.text} sub={roleInfo.sub} color={roleInfo.color} />
               <div style={{ marginTop: 14 }}>
-                {phase === 'guesser' && !promptRevealed ? (
+                {phase === 'storyteller' && !promptRevealed ? (
                   <button
                     onClick={() => setPromptRevealed(true)}
                     style={{
@@ -159,12 +160,12 @@ export default function App() {
                 <GuesserScreen
                   prompt={prompt} value={guess} onChange={setGuess}
                   dialStyle={dialStyle} onLock={goReveal}
-                  promptRevealed={promptRevealed}
                 />
               ) : (
                 <StorytellerScreen
                   prompt={prompt} target={target}
                   dialStyle={dialStyle} onPass={goPass} onSkip={skipPrompt}
+                  promptRevealed={promptRevealed}
                 />
               )}
             </div>

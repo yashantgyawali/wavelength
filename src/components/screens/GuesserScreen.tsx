@@ -17,12 +17,9 @@ interface GuesserScreenProps {
   onChange: (v: number) => void;
   dialStyle: DialStyle;
   onLock: () => void;
-  promptRevealed: boolean;
 }
 
-export function GuesserScreen({ value, onChange, dialStyle, onLock, promptRevealed }: GuesserScreenProps) {
-  if (!promptRevealed) return <div style={{ flex: 1 }} />;
-
+export function GuesserScreen({ value, onChange, dialStyle, onLock }: GuesserScreenProps) {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 16 }}>

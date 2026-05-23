@@ -27,9 +27,12 @@ interface StorytellerScreenProps {
   dialStyle: DialStyle;
   onPass: () => void;
   onSkip: () => void;
+  promptRevealed: boolean;
 }
 
-export function StorytellerScreen({ target, dialStyle, onPass, onSkip }: StorytellerScreenProps) {
+export function StorytellerScreen({ target, dialStyle, onPass, onSkip, promptRevealed }: StorytellerScreenProps) {
+  if (!promptRevealed) return <div style={{ flex: 1 }} />;
+
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 16 }}>
