@@ -11,14 +11,25 @@ const btnPrimary: React.CSSProperties = {
   cursor: 'pointer', width: '100%',
 };
 
+const btnSecondary: React.CSSProperties = {
+  fontFamily: 'Atkinson Hyperlegible, sans-serif', fontWeight: 700,
+  background: 'transparent', color: '#5A3A1F',
+  border: '2px solid #5A3A1F', borderRadius: 14,
+  padding: '12px 22px', fontSize: 15,
+  transform: 'rotate(0.5deg)',
+  boxShadow: '3px 3px 0 0 #D68057',
+  cursor: 'pointer', width: '100%',
+};
+
 interface StorytellerScreenProps {
   prompt: Prompt;
   target: number;
   dialStyle: DialStyle;
   onPass: () => void;
+  onSkip: () => void;
 }
 
-export function StorytellerScreen({ target, dialStyle, onPass }: StorytellerScreenProps) {
+export function StorytellerScreen({ target, dialStyle, onPass, onSkip }: StorytellerScreenProps) {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 16 }}>
@@ -33,6 +44,9 @@ export function StorytellerScreen({ target, dialStyle, onPass }: StorytellerScre
         </div>
         <button onClick={onPass} style={btnPrimary}>
           got it · hide the target
+        </button>
+        <button onClick={onSkip} style={btnSecondary}>
+          skip this prompt ↺
         </button>
       </div>
     </>
