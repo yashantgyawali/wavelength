@@ -121,11 +121,31 @@ export default function App() {
             {/* header */}
             <div style={{ padding: '0 18px' }}>
               <RoleBadge text={roleInfo.text} sub={roleInfo.sub} color={roleInfo.color} />
-              {(phase !== 'guesser' || promptRevealed) && (
-                <div style={{ marginTop: 14 }}>
+              <div style={{ marginTop: 14 }}>
+                {phase === 'guesser' && !promptRevealed ? (
+                  <button
+                    onClick={() => setPromptRevealed(true)}
+                    style={{
+                      width: '100%',
+                      background: '#FFFFFF',
+                      border: '2px solid #130D01',
+                      borderRadius: 14,
+                      padding: '18px 14px',
+                      boxShadow: '5px 5px 0 0 #F3B952',
+                      transform: 'rotate(-0.6deg)',
+                      cursor: 'pointer',
+                      fontFamily: 'Patrick Hand, cursive',
+                      fontSize: 17,
+                      color: '#5A3A1F',
+                      letterSpacing: '0.04em',
+                    }}
+                  >
+                    tap to reveal the prompt ✦
+                  </button>
+                ) : (
                   <PromptCard prompt={prompt} />
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
             {/* dial + footer */}
@@ -139,7 +159,7 @@ export default function App() {
                 <GuesserScreen
                   prompt={prompt} value={guess} onChange={setGuess}
                   dialStyle={dialStyle} onLock={goReveal}
-                  promptRevealed={promptRevealed} onRevealPrompt={() => setPromptRevealed(true)}
+                  promptRevealed={promptRevealed}
                 />
               ) : (
                 <StorytellerScreen

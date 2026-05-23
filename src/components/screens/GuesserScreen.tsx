@@ -11,16 +11,6 @@ const btnPrimary: React.CSSProperties = {
   cursor: 'pointer', width: '100%',
 };
 
-const btnReveal: React.CSSProperties = {
-  fontFamily: 'Atkinson Hyperlegible, sans-serif', fontWeight: 700,
-  background: '#F3B952', color: '#130D01',
-  border: '2px solid #130D01', borderRadius: 14,
-  padding: '12px 22px', fontSize: 15,
-  transform: 'rotate(0.5deg)',
-  boxShadow: '3px 3px 0 0 #F16147',
-  cursor: 'pointer', width: '100%',
-};
-
 interface GuesserScreenProps {
   prompt: Prompt;
   value: number;
@@ -28,10 +18,11 @@ interface GuesserScreenProps {
   dialStyle: DialStyle;
   onLock: () => void;
   promptRevealed: boolean;
-  onRevealPrompt: () => void;
 }
 
-export function GuesserScreen({ value, onChange, dialStyle, onLock, promptRevealed, onRevealPrompt }: GuesserScreenProps) {
+export function GuesserScreen({ value, onChange, dialStyle, onLock, promptRevealed }: GuesserScreenProps) {
+  if (!promptRevealed) return <div style={{ flex: 1 }} />;
+
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 16 }}>
@@ -40,12 +31,7 @@ export function GuesserScreen({ value, onChange, dialStyle, onLock, promptReveal
         </div>
       </div>
       <div style={{ flex: 1 }} />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '0 18px 30px' }}>
-        {!promptRevealed && (
-          <button onClick={onRevealPrompt} style={btnReveal}>
-            reveal the prompt ✦
-          </button>
-        )}
+      <div style={{ padding: '0 18px 30px' }}>
         <button onClick={onLock} style={btnPrimary}>
           lock in my guess
         </button>
@@ -53,3 +39,4 @@ export function GuesserScreen({ value, onChange, dialStyle, onLock, promptReveal
     </>
   );
 }
+
